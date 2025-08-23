@@ -159,29 +159,29 @@ function initPortfolioAnimations() {
 }
 
 // Mobile menu toggle
-function initMobileMenu() {
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
+// function initMobileMenu() {
+//     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+//     const navLinks = document.querySelector('.nav-links');
     
-    if (mobileMenuBtn && navLinks) {
-        mobileMenuBtn.addEventListener('click', function() {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+//     if (mobileMenuBtn && navLinks) {
+//         mobileMenuBtn.addEventListener('click', function() {
+//             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
             
-            // Add mobile menu styles when opened
-            if (navLinks.style.display === 'flex') {
-                navLinks.style.position = 'absolute';
-                navLinks.style.top = '100%';
-                navLinks.style.left = '0';
-                navLinks.style.width = '100%';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.background = 'rgba(255, 255, 255, 0.95)';
-                navLinks.style.backdropFilter = 'blur(10px)';
-                navLinks.style.padding = '1rem';
-                navLinks.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-            }
-        });
-    }
-}
+//             // Add mobile menu styles when opened
+//             if (navLinks.style.display === 'flex') {
+//                 navLinks.style.position = 'absolute';
+//                 navLinks.style.top = '100%';
+//                 navLinks.style.left = '0';
+//                 navLinks.style.width = '100%';
+//                 navLinks.style.flexDirection = 'column';
+//                 navLinks.style.background = 'rgba(255, 255, 255, 0.95)';
+//                 navLinks.style.backdropFilter = 'blur(10px)';
+//                 navLinks.style.padding = '1rem';
+//                 navLinks.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+//             }
+//         });
+//     }
+// }
 
 // Typing animation function
 function typeWriter(element, text, speed = 100) {

@@ -299,40 +299,57 @@ section {
 
 /* Contact Section */
 #contact {
-    background: var(--dark);
-    color: white;
+    padding: 40px 20px;
+    text-align: center;
 }
 
 .contact-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
+    display: flex;
+    justify-content: center;
 }
 
-.contact-info h3 {
-    color: var(--accent);
-    margin-bottom: 1rem;
+.contact-info {
+    background: #333;
+    border-radius: 12px;
+    padding: 40px 1000px;
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
 }
 
 .contact-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
+    gap: 8px;
+    color: #fff;
+    font-size: 14px;
 }
 
 .contact-item i {
-    font-size: 1.5rem;
-    color: var(--secondary);
-    width: 30px;
+    color: #4a90e2;
+    font-size: 16px;
 }
 
-.contact-form {
+@media (max-width: 768px) {
+    .contact-info {
+        flex-wrap: wrap;
+        gap: 20px;
+        padding: 15px 20px;
+    }
+    
+    .contact-item {
+        white-space: normal;
+    }
+}
+
+/* .contact-form {
     background: rgba(255,255,255,0.1);
     padding: 2rem;
     border-radius: 15px;
     backdrop-filter: blur(10px);
-}
+} */
 
 .form-group {
     margin-bottom: 1.5rem;
