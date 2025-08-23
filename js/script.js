@@ -106,8 +106,8 @@ window.addEventListener('click', (e) => {
 function downloadResume() {
     // สร้าง link สำหรับดาวน์โหลด resume
     const link = document.createElement('a');
-    link.href = 'assets/resume.pdf'; // เปลี่ยนเป็นไฟล์ resume จริง
-    link.download = 'Resume_GraphicDesigner.pdf';
+    link.href = 'PDF/Resume_Achara 2025 for web.pdf'; // เปลี่ยนเป็นไฟล์ resume จริง
+    link.download = 'Resume_Achara2025.pdf';
     link.click();
     
     // หรือเปิดหน้าต่างใหม่ไปยัง Google Drive หรือ Cloud Storage
