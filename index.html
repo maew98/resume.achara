@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio - Graphic Designer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo">Portfolio</div>
+            <ul class="nav-links">
+                <li><a href="#about">เกี่ยวกับเรา</a></li>
+                <li><a href="#portfolio">ผลงาน</a></li>
+                <li><a href="#links">Links</a></li>
+                <li><a href="#contact">ติดต่อ</a></li>
+            </ul>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2 class="section-title">ACHARA BUTTAMA</h2>
+        <div class="about-content">
+            <div class="about-image">
+                <img src="images/kat2.jpg" alt="Profile Picture">
+            </div>
+            <div class="about-text">
+                <h3>Graphic Designer</h3>
+                <p>I’m a Graphic Designer with over 3 years of experience, working across both Online and Offline Media, including VDO Production. I specialize in brand design and also have a foundational knowledge of UI/UX design.</p>
+                <p>I believe that great design should combine both aesthetics and functionality — creating experiences that are not only visually appealing but also meaningful and user-friendly</p>
+                
+                <div class="skills">
+                    <span class="skill-tag">Adobe Photoshop</span>
+                    <span class="skill-tag">Adobe Illustrator</span>
+                    <span class="skill-tag">Adobe Premiere Pro</span>
+                    <span class="skill-tag">Adobe After Effect</span>
+                    <span class="skill-tag">Adobe Lightroom</span>
+                    <span class="skill-tag">Adobe Firefiy</span>
+                    <span class="skill-tag">Figma</span>
+                    <span class="skill-tag">Canva</span>
+                    <span class="skill-tag">CapCut</span>
+                </div>
+
+                <a href="#" class="resume-btn" onclick="downloadResume()">
+                    <i class="fas fa-download"></i>
+                    Download Resume
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio">
+        <h2 class="section-title">ผลงาน</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item" onclick="openModal('modal1')">
+                <img src="images/portfolio/project1.jpg" alt="Brand Identity Project">
+                <div class="portfolio-content">
+                    <h3>Brand Identity Design</h3>
+                    <p>การออกแบบเอกลักษณ์แบรนด์สำหรับบริษัทเทคโนโลยี</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Branding</span>
+                        <span class="portfolio-tag">Logo Design</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-item" onclick="openModal('modal2')">
+                <img src="images/portfolio/project2.jpg" alt="UI/UX Design">
+                <div class="portfolio-content">
+                    <h3>Mobile App UI/UX</h3>
+                    <p>การออกแบบส่วนติดต่อผู้ใช้สำหรับแอปพลิเคชันมือถือ</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">UI Design</span>
+                        <span class="portfolio-tag">UX Research</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-item" onclick="openModal('modal3')">
+                <img src="images/portfolio/project3.jpg" alt="Print Design">
+                <div class="portfolio-content">
+                    <h3>Print Design</h3>
+                    <p>การออกแบบสื่อสิ่งพิมพ์และบรรจุภัณฑ์</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Print Design</span>
+                        <span class="portfolio-tag">Packaging</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="portfolio-item" onclick="openModal('modal4')">
+                <img src="images/portfolio/project4.jpg" alt="Digital Marketing">
+                <div class="portfolio-content">
+                    <h3>Digital Marketing Assets</h3>
+                    <p>การออกแบบสื่อสำหรับการตลาดดิจิทัล</p>
+                    <div class="portfolio-tags">
+                        <span class="portfolio-tag">Social Media</span>
+                        <span class="portfolio-tag">Digital Ads</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Links Section -->
+    <section id="links">
+        <h2 class="section-title">ลิงก์ผลงาน</h2>
+        <div class="links-grid">
+            <a href="https://www.canva.com/" target="_blank" class="link-card">
+                <i class="fab fa-canva"></i>
+                <h3>Canva Templates</h3>
+                <p>เทมเพลตและการออกแบบบน Canva ของเรา</p>
+            </a>
+
+            <a href="#" target="_blank" class="link-card">
+                <i class="fas fa-globe"></i>
+                <h3>Web Portfolio</h3>
+                <p>ผลงานการออกแบบเว็บไซต์และ UI/UX</p>
+            </a>
+
+            <a href="#" target="_blank" class="link-card">
+                <i class="fab fa-behance"></i>
+                <h3>Behance</h3>
+                <p>ชมผลงานทั้งหมดบน Behance</p>
+            </a>
+
+            <a href="#" target="_blank" class="link-card">
+                <i class="fab fa-dribbble"></i>
+                <h3>Dribbble</h3>
+                <p>ไอเดียและแนวคิดการออกแบบ</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">ติดต่อเรา</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <h3>ข้อมูลการติดต่อ</h3>
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>designer@example.com</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span>+66 12 345 6789</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>กรุงเทพมหานคร, ประเทศไทย</span>
+                </div>
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <span>LinkedIn Profile</span>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <form onsubmit="submitForm(event)">
+                    <div class="form-group">
+                        <label for="name">ชื่อ</label>
+                        <input type="text" id="name" name="name" placeholder="ชื่อของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">อีเมล</label>
+                        <input type="email" id="email" name="email" placeholder="อีเมลของคุณ" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">ข้อความ</label>
+                        <textarea id="message" name="message" rows="5" placeholder="ข้อความของคุณ" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">ส่งข้อความ</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Portfolio. All rights reserved. | สร้างด้วยใจโดย Graphic Designer</p>
+    </footer>
+
+    <!-- Modal for Portfolio Items -->
+    <div id="portfolioModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
