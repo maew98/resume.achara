@@ -73,21 +73,97 @@ const modalData = {
 // Portfolio modal functions
 function openModal(modalId) {
     const modal = document.getElementById('portfolioModal');
-    const content = document.getElementById('modalContent');
+    const modalContent = document.getElementById('modalContent');
     
-    const data = modalData[modalId];
-    if (data) {
-        content.innerHTML = `
-            <h2 style="margin-bottom: 1rem; color: var(--primary);">${data.title}</h2>
-            <img src="${data.image}" alt="${data.title}" style="width: 100%; border-radius: 10px; margin-bottom: 1rem;">
-            <p style="margin-bottom: 1rem; color: var(--text-light);">${data.description}</p>
-            <h3 style="margin-bottom: 0.5rem;">รายละเอียดโปรเจกต์:</h3>
-            <ul style="list-style-type: disc; margin-left: 2rem; color: var(--text-light);">
-                ${data.details.map(detail => `<li>${detail}</li>`).join('')}
-            </ul>
+    if (modalId === 'modal1') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>Brand Identity Design</h2>
+                <p>การออกแบบเอกลักษณ์แบรนด์สำหรับบริษัทเทคโนโลยี</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <img src="images/online/Online ADS-01.jpg" alt="Logo Design" class="modal-image">
+                <img src="images/portfolio/project1-2.jpg" alt="Business Cards" class="modal-image">
+                <img src="images/portfolio/project1-3.jpg" alt="Letterhead" class="modal-image">
+                <img src="images/portfolio/project1-4.jpg" alt="Brand Guidelines" class="modal-image">
+                <img src="images/portfolio/project1-5.jpg" alt="Marketing Materials" class="modal-image">
+            </div>
+            
+            <div class="modal-description">
+                <h3>รายละเอียดโครงการ</h3>
+                <p>โครงการนี้เป็นการออกแบบเอกลักษณ์แบรนด์ครบชุดสำหรับบริษัทเทคโนโลยีใหม่</p>
+            </div>
         `;
-        modal.style.display = 'block';
+    } else if (modalId === 'modal2') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>Mobile App UI/UX</h2>
+                <p>การออกแบบส่วนติดต่อผู้ใช้สำหรับแอปพลิเคชันมือถือ</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <video controls class="modal-video">
+                    <source src="images/portfolio/app-demo.mp4" type="video/mp4">
+                    <source src="images/portfolio/app-demo.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                </video>
+                <img src="images/portfolio/app-wireframe.jpg" alt="App Wireframes" class="modal-image">
+                <img src="images/portfolio/app-screens.jpg" alt="App Screens" class="modal-image">
+                <img src="images/portfolio/app-prototype.jpg" alt="Interactive Prototype" class="modal-image">
+            </div>
+            
+            <div class="modal-description">
+                <h3>รายละเอียดโครงการ</h3>
+                <p>การออกแบบแอปพลิเคชันมือถือสำหรับการจัดการงาน รวมถึง UX Research และ UI Design</p>
+            </div>
+        `;
+    } else if (modalId === 'modal3') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>Web Design Project</h2>
+                <p>การออกแบบเว็บไซต์สำหรับธุรกิจออนไลน์</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <img src="images/portfolio/web-homepage.jpg" alt="Homepage Design" class="modal-image">
+                <video controls class="modal-video">
+                    <source src="images/portfolio/web-animation.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <img src="images/portfolio/web-responsive.jpg" alt="Responsive Design" class="modal-image">
+                <img src="images/portfolio/web-components.jpg" alt="UI Components" class="modal-image">
+            </div>
+            
+            <div class="modal-description">
+                <h3>รายละเอียดโครงการ</h3>
+                <p>การออกแบบเว็บไซต์ที่ตอบสนองทุกขนาดหน้าจอ พร้อมแอนิเมชันและ Interactive Elements</p>
+            </div>
+        `;
+    } else if (modalId === 'modal4') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>Print Design Collection</h2>
+                <p>ผลงานการออกแบบสื่อสิ่งพิมพ์</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <img src="images/portfolio/poster1.jpg" alt="Event Poster" class="modal-image">
+                <img src="images/portfolio/brochure.jpg" alt="Company Brochure" class="modal-image">
+                <img src="images/portfolio/magazine.jpg" alt="Magazine Layout" class="modal-image">
+                <img src="images/portfolio/packaging.jpg" alt="Product Packaging" class="modal-image">
+                <img src="images/portfolio/book-cover.jpg" alt="Book Cover Design" class="modal-image">
+            </div>
+            
+            <div class="modal-description">
+                <h3>รายละเอียดโครงการ</h3>
+                <p>คอลเลกชันงานออกแบบสื่อสิ่งพิมพ์ต่างๆ รวมถึงโปสเตอร์ โบรชัวร์ และบรรจุภัณฑ์</p>
+            </div>
+        `;
     }
+    
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
 }
 
 function closeModal() {

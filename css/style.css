@@ -403,33 +403,118 @@ footer {
 }
 
 /* Modal */
+
 .modal {
     display: none;
     position: fixed;
-    z-index: 2000;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0,0,0,0.8);
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .modal-content {
     position: relative;
-    margin: 5% auto;
-    padding: 2rem;
-    width: 80%;
+    background-color: #fff;
+    margin: 2% auto;
+    padding: 0;
+    width: 90%;
     max-width: 800px;
-    background: white;
-    border-radius: 15px;
+    max-height: 90vh;
+    border-radius: 12px;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .close {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    font-size: 2rem;
+    position: sticky;
+    top: 0;
+    right: 0;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    padding: 20px;
     cursor: pointer;
+    background: #fff;
+    z-index: 1001;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.modal-header {
+    padding: 30px 30px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.modal-header p {
+    margin: 0;
+    color: #666;
+    font-size: 16px;
+}
+
+.modal-gallery {
+    padding: 20px 30px;
+}
+
+.modal-image {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-description {
+    padding: 20px 30px 30px;
+    border-top: 1px solid #eee;
+}
+
+.modal-description h3 {
+    color: #333;
+    margin: 20px 0 10px;
+}
+
+.modal-description ul {
+    padding-left: 20px;
+}
+
+.modal-description li {
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.modal-video {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.modal-image {
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Mixed media gallery styling */
+.modal-gallery > * {
+    display: block;
+    margin-bottom: 20px;
 }
 
 /* Animations */
