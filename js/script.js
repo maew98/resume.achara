@@ -77,46 +77,20 @@ function openModal(modalId) {
     
     if (modalId === 'modal1') {
         modalContent.innerHTML = `
-            <div class="modal-header">
-                <h2>Brand Identity Design</h2>
-                <p>การออกแบบเอกลักษณ์แบรนด์สำหรับบริษัทเทคโนโลยี</p>
-            </div>
+
             
             <div class="modal-gallery">
-                <img src="images/online/Online ADS-01.jpg" alt="Logo Design" class="modal-image">
-                <img src="images/portfolio/project1-2.jpg" alt="Business Cards" class="modal-image">
-                <img src="images/portfolio/project1-3.jpg" alt="Letterhead" class="modal-image">
-                <img src="images/portfolio/project1-4.jpg" alt="Brand Guidelines" class="modal-image">
-                <img src="images/portfolio/project1-5.jpg" alt="Marketing Materials" class="modal-image">
+                <img src="https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756027078/Onlinenew-01_owvch2.jpg" class="modal-image">
             </div>
             
-            <div class="modal-description">
-                <h3>รายละเอียดโครงการ</h3>
-                <p>โครงการนี้เป็นการออกแบบเอกลักษณ์แบรนด์ครบชุดสำหรับบริษัทเทคโนโลยีใหม่</p>
-            </div>
+
         `;
     } else if (modalId === 'modal2') {
         modalContent.innerHTML = `
-            <div class="modal-header">
-                <h2>Mobile App UI/UX</h2>
-                <p>การออกแบบส่วนติดต่อผู้ใช้สำหรับแอปพลิเคชันมือถือ</p>
-            </div>
-            
             <div class="modal-gallery">
-                <video controls class="modal-video">
-                    <source src="images/portfolio/app-demo.mp4" type="video/mp4">
-                    <source src="images/portfolio/app-demo.webm" type="video/webm">
-                    Your browser does not support the video tag.
-                </video>
-                <img src="images/portfolio/app-wireframe.jpg" alt="App Wireframes" class="modal-image">
-                <img src="images/portfolio/app-screens.jpg" alt="App Screens" class="modal-image">
-                <img src="images/portfolio/app-prototype.jpg" alt="Interactive Prototype" class="modal-image">
+                <img src="https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756026447/Online-02_j0kjhl.jpg" class="modal-image">
             </div>
             
-            <div class="modal-description">
-                <h3>รายละเอียดโครงการ</h3>
-                <p>การออกแบบแอปพลิเคชันมือถือสำหรับการจัดการงาน รวมถึง UX Research และ UI Design</p>
-            </div>
         `;
     } else if (modalId === 'modal3') {
         modalContent.innerHTML = `
@@ -180,16 +154,14 @@ window.addEventListener('click', (e) => {
 
 // Download resume function
 function downloadResume() {
-    // สร้าง link สำหรับดาวน์โหลด resume
+    // คัดลอก URL จาก Cloudinary Dashboard
+    const cloudinaryURL = 'https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756026506/Resume_Achara_Buttama_2025web-01_qd2bt9.jpg';
+    
     const link = document.createElement('a');
-    link.href = 'PDF/Resume_Achara 2025 for web.pdf'; // เปลี่ยนเป็นไฟล์ resume จริง
+    link.href = cloudinaryURL;
     link.download = 'Resume_Achara2025.pdf';
     link.click();
     
-    // หรือเปิดหน้าต่างใหม่ไปยัง Google Drive หรือ Cloud Storage
-    // window.open('https://drive.google.com/file/d/your-resume-file-id/view', '_blank');
-    
-    // แจ้งเตือนหากยังไม่มีไฟล์
     console.log('กำลังดาวน์โหลดไฟล์ Resume...');
 }
 
