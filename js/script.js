@@ -1,343 +1,403 @@
 // Portfolio Website JavaScript Functions
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+let portfolioObserver = null;
+let scrollListener = null;
+let animationFrameId = null;
+let isScrolling = false;
+
+// ฟังก์ชันเลื่อนกลับไปหน้าแรก
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
     });
-});
+}
+
+// Optimized scroll handler
+function optimizedScrollHandler() {
+    if (isScrolling) return;
+    
+    isScrolling = true;
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+    }
+    
+    animationFrameId = requestAnimationFrame(() => {
+        const navbar = document.getElementById('navbar');
+        if (navbar) {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+        isScrolling = false;
+    });
+}
 
 // Navbar scroll effect
-window.addEventListener('scroll', () => {
-    const navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+function initNavbarScroll() {
+    // ลบ listener เก่าถ้ามี
+    if (scrollListener) {
+        window.removeEventListener('scroll', scrollListener);
     }
-});
+    
+    window.addEventListener('scroll', optimizedScrollHandler, { passive: true });
+}
+
+// Smooth scrolling for navigation links
+function initSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offsetTop = target.offsetTop - 80; // ลบความสูงของ navbar
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                // ปิด mobile menu หากเปิดอยู่
+                const navLinks = document.querySelector('.nav-links');
+                if (navLinks && navLinks.classList.contains('mobile-active')) {
+                    navLinks.classList.remove('mobile-active');
+                }
+            }
+        });
+    });
+}
 
 // Animation on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('animate-on-scroll');
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-});
-
-// Portfolio modal data
-const modalData = {
-    'modal1': {
-        title: 'Brand Identity Design',
-        image: 'images/portfolio/project1.jpg',
-        description: 'โปรเจกต์การออกแบบเอกลักษณ์แบรนด์สำหรับบริษัทเทคโนโลยีสตาร์ทอัพ รวมถึงการออกแบบโลโก้, ระบบสี, และแนวทางการใช้งานแบรนด์',
-        details: ['วิจัยและวิเคราะห์แบรนด์', 'ออกแบบโลโก้และสัญลักษณ์', 'พัฒนาระบบสีและตัวอักษร', 'สร้าง Brand Guidelines']
-    },
-    'modal2': {
-        title: 'Mobile App UI/UX',
-        image: 'images/portfolio/project2.jpg',
-        description: 'การออกแบบส่วนติดต่อผู้ใช้และประสบการณ์ผู้ใช้สำหรับแอปพลิเคชันมือถือด้านสุขภาพ',
-        details: ['UX Research และ User Journey', 'สร้าง Wireframes และ Prototypes', 'ออกแบบ UI Components', 'User Testing และปรับปรุง']
-    },
-    'modal3': {
-        title: 'Print Design',
-        image: 'images/portfolio/project3.jpg',
-        description: 'การออกแบบสื่อสิ่งพิมพ์และบรรจุภัณฑ์สำหรับผลิตภัณฑ์อินทรีย์',
-        details: ['ออกแบบบรรจุภัณฑ์', 'สร้างคู่มือผลิตภัณฑ์', 'ออกแบบโบรชัวร์', 'การจัดพิมพ์และผลิต']
-    },
-    'modal4': {
-        title: 'Digital Marketing Assets',
-        image: 'images/portfolio/project4.jpg',
-        description: 'การสร้างสื่อการตลาดดิจิทัลสำหรับแคมเปญออนไลน์',
-        details: ['ออกแบบโฆษณา Social Media', 'สร้าง Banner และ Display Ads', 'Email Marketing Templates', 'การวิเคราะห์ผลการตลาด']
+function initScrollAnimations() {
+    // ลบ observer เก่าถ้ามี
+    if (portfolioObserver) {
+        portfolioObserver.disconnect();
     }
-};
+    
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    portfolioObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-on-scroll');
+                // หยุดการสังเกตหลังจาก animate แล้ว
+                portfolioObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('section').forEach(section => {
+        portfolioObserver.observe(section);
+    });
+}
+
+// Mobile Menu Function
+function initMobileMenu() {
+    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+    const navLinks = document.querySelector('.nav-links');
+    
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('mobile-active');
+        });
+        
+        // ปิด mobile menu เมื่อคลิกที่ link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', function() {
+                navLinks.classList.remove('mobile-active');
+            });
+        });
+        
+        // ปิด mobile menu เมื่อคลิกนอกพื้นที่
+        document.addEventListener('click', function(event) {
+            if (!mobileMenuBtn.contains(event.target) && !navLinks.contains(event.target)) {
+                navLinks.classList.remove('mobile-active');
+            }
+        });
+    }
+}
 
 // Portfolio modal functions
 function openModal(modalId) {
     const modal = document.getElementById('portfolioModal');
     const modalContent = document.getElementById('modalContent');
     
+    if (!modal || !modalContent) return;
+    
+    // เคลียร์เนื้อหาเก่า
+    modalContent.innerHTML = '';
+    
+    // สร้างเนื้อหาตาม modalId
     if (modalId === 'modal1') {
         modalContent.innerHTML = `
-
-            
-            <div class="modal-gallery">
-                <img src="https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756027078/Onlinenew-01_owvch2.jpg" class="modal-image">
-            </div>
-            
-
-        `;
-    } else if (modalId === 'modal2') {
-        modalContent.innerHTML = `
-            <div class="modal-gallery">
-                <img src="https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756026447/Online-02_j0kjhl.jpg" class="modal-image">
-            </div>
-            
-        `;
-    } else if (modalId === 'modal3') {
-        modalContent.innerHTML = `
             <div class="modal-header">
-                <h2>Web Design Project</h2>
-                <p>การออกแบบเว็บไซต์สำหรับธุรกิจออนไลน์</p>
+                <h2>ONLINE MEDIA</h2>
+                <p>ผลงานการออกแบบสื่อออนไลน์</p>
             </div>
             
             <div class="modal-gallery">
-                <img src="images/portfolio/web-homepage.jpg" alt="Homepage Design" class="modal-image">
-                <video controls class="modal-video">
-                    <source src="images/portfolio/web-animation.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <img src="images/portfolio/web-responsive.jpg" alt="Responsive Design" class="modal-image">
-                <img src="images/portfolio/web-components.jpg" alt="UI Components" class="modal-image">
+                <img src="https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756027078/Onlinenew-01_owvch2.jpg" class="modal-image" alt="Online Media Design">
             </div>
             
             <div class="modal-description">
                 <h3>รายละเอียดโครงการ</h3>
-                <p>การออกแบบเว็บไซต์ที่ตอบสนองทุกขนาดหน้าจอ พร้อมแอนิเมชันและ Interactive Elements</p>
+                <p>การออกแบบสื่อโฆษณาออนไลน์ รวมถึง Facebook Ads, Instagram Posts, Line Official Account และ E-commerce platforms</p>
+                <ul>
+                    <li>Facebook & Instagram Advertising</li>
+                    <li>Line Official Account Design</li>
+                    <li>Shopee & Lazada Store Design</li>
+                    <li>Logo Design & Branding</li>
+                </ul>
+            </div>
+        `;
+    } else if (modalId === 'modal2') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>OFFLINE MEDIA</h2>
+                <p>ผลงานการออกแบบสื่อออฟไลน์</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <img src="https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756026447/Online-02_j0kjhl.jpg" class="modal-image" alt="Offline Media Design">
+            </div>
+            
+            <div class="modal-description">
+                <h3>รายละเอียดโครงการ</h3>
+                <p>การออกแบบสื่อสิ่งพิมพ์และการจัดแสดง</p>
+                <ul>
+                    <li>Event Design & Setup</li>
+                    <li>Product Catalog Design</li>
+                    <li>Standee & Display Design</li>
+                    <li>Packaging Design</li>
+                    <li>Billboard & Outdoor Media</li>
+                </ul>
+            </div>
+        `;
+    } else if (modalId === 'modal3') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>VIDEO PRODUCTION</h2>
+                <p>ผลงานการผลิตวิดีโอ</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <div class="video-placeholder">
+                    <i class="fas fa-play-circle"></i>
+                    <p>Video content coming soon...</p>
+                </div>
+            </div>
+            
+            <div class="modal-description">
+                <h3>รายละเอียดโครงการ</h3>
+                <p>การผลิตวิดีโอสำหรับสื่อต่างๆ</p>
+                <ul>
+                    <li>Content Video Production</li>
+                    <li>TV Commercial (TVC)</li>
+                    <li>Online Advertising Video</li>
+                    <li>Corporate Video</li>
+                    <li>Social Media Video Content</li>
+                </ul>
             </div>
         `;
     } else if (modalId === 'modal4') {
         modalContent.innerHTML = `
             <div class="modal-header">
-                <h2>Print Design Collection</h2>
-                <p>ผลงานการออกแบบสื่อสิ่งพิมพ์</p>
+                <h2>UX DESIGN</h2>
+                <p>ผลงานการออกแบบประสบการณ์ผู้ใช้</p>
             </div>
             
             <div class="modal-gallery">
-                <img src="images/portfolio/poster1.jpg" alt="Event Poster" class="modal-image">
-                <img src="images/portfolio/brochure.jpg" alt="Company Brochure" class="modal-image">
-                <img src="images/portfolio/magazine.jpg" alt="Magazine Layout" class="modal-image">
-                <img src="images/portfolio/packaging.jpg" alt="Product Packaging" class="modal-image">
-                <img src="images/portfolio/book-cover.jpg" alt="Book Cover Design" class="modal-image">
+                <div class="ux-showcase">
+                    <i class="fas fa-mobile-alt"></i>
+                    <p>UX Design Portfolio</p>
+                </div>
             </div>
             
             <div class="modal-description">
                 <h3>รายละเอียดโครงการ</h3>
-                <p>คอลเลกชันงานออกแบบสื่อสิ่งพิมพ์ต่างๆ รวมถึงโปสเตอร์ โบรชัวร์ และบรรจุภัณฑ์</p>
+                <p>การออกแบบประสบการณ์ผู้ใช้และการวิจัยผู้ใช้</p>
+                <ul>
+                    <li>Empathize - การทำความเข้าใจผู้ใช้</li>
+                    <li>Define - การกำหนดปัญหา</li>
+                    <li>Ideate - การระดมความคิด</li>
+                    <li>Prototype - การสร้างต้นแบบ</li>
+                    <li>Test - การทดสอบและปรับปรุง</li>
+                </ul>
+            </div>
+        `;
+    } else if (modalId === 'modal5') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>UI DESIGN</h2>
+                <p>ผลงานการออกแบบส่วนติดต่อผู้ใช้</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <div class="ui-showcase">
+                    <i class="fas fa-desktop"></i>
+                    <p>UI Design Collection</p>
+                </div>
+            </div>
+            
+            <div class="modal-description">
+                <h3>รายละเอียดโครงการ</h3>
+                <p>การออกแบบส่วนติดต่อผู้ใช้สำหรับแอปพลิเคชันและเว็บไซต์</p>
+                <ul>
+                    <li>Wireframe Design</li>
+                    <li>Design System & Style Guide</li>
+                    <li>High-Fidelity Mockups</li>
+                    <li>Interactive Prototypes</li>
+                    <li>Responsive Design</li>
+                </ul>
+            </div>
+        `;
+    } else if (modalId === 'modal6') {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>AWARDS & CERTIFICATES</h2>
+                <p>รางวัลและใบประกาศนียบัตร</p>
+            </div>
+            
+            <div class="modal-gallery">
+                <div class="awards-showcase">
+                    <i class="fas fa-trophy"></i>
+                    <p>Awards & Achievements</p>
+                </div>
+            </div>
+            
+            <div class="modal-description">
+                <h3>ความสำเร็จและการยอมรับ</h3>
+                <p>รางวัลและใบประกาศนียบัตรที่ได้รับตลอดการทำงาน</p>
+                <ul>
+                    <li>Design Excellence Awards</li>
+                    <li>Adobe Certified Expert</li>
+                    <li>UX/UI Design Certification</li>
+                    <li>Creative Industry Recognition</li>
+                    <li>Professional Development Certificates</li>
+                </ul>
             </div>
         `;
     }
     
+    // แสดง modal
     modal.style.display = 'block';
     document.body.style.overflow = 'hidden';
+    
+    // เพิ่ม animation
+    const modalContentElement = modal.querySelector('.modal-content');
+    if (modalContentElement) {
+        modalContentElement.style.transform = 'translateY(-50px)';
+        modalContentElement.style.opacity = '0';
+        
+        requestAnimationFrame(() => {
+            modalContentElement.style.transition = 'all 0.3s ease';
+            modalContentElement.style.transform = 'translateY(0)';
+            modalContentElement.style.opacity = '1';
+        });
+    }
 }
 
 function closeModal() {
-    document.getElementById('portfolioModal').style.display = 'none';
-}
-
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
     const modal = document.getElementById('portfolioModal');
-    if (e.target === modal) {
-        closeModal();
+    if (modal) {
+        const modalContentElement = modal.querySelector('.modal-content');
+        
+        if (modalContentElement) {
+            modalContentElement.style.transform = 'translateY(-50px)';
+            modalContentElement.style.opacity = '0';
+            
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }, 300);
+        } else {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
     }
-});
+}
 
 // Download resume function
 function downloadResume() {
-    // คัดลอก URL จาก Cloudinary Dashboard
     const cloudinaryURL = 'https://res.cloudinary.com/dzjxxbhfp/image/upload/v1756026506/Resume_Achara_Buttama_2025web-01_qd2bt9.jpg';
     
+    // สร้าง link element ชั่วคราว
     const link = document.createElement('a');
     link.href = cloudinaryURL;
-    link.download = 'Resume_Achara2025.pdf';
+    link.download = 'Resume_Achara_Buttama_2025.jpg';
+    link.target = '_blank';
+    
+    // เพิ่มลงใน DOM และคลิก
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
     
-    console.log('กำลังดาวน์โหลดไฟล์ Resume...');
-}
-
-// Form submission
-function submitForm(e) {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const message = formData.get('message');
+    // แสดงข้อความยืนยัน
+    const notification = document.createElement('div');
+    notification.innerHTML = `
+        <i class="fas fa-download"></i>
+        <span>กำลังดาวน์โหลด Resume...</span>
+    `;
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--primary);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        animation: slideIn 0.3s ease;
+    `;
     
-    // ส่งข้อมูลไปยัง server หรือ email service
-    // ตัวอย่างการใช้งาน EmailJS หรือ Formspree
+    document.body.appendChild(notification);
     
-    // EmailJS example:
-    // emailjs.send('service_id', 'template_id', {
-    //     from_name: name,
-    //     from_email: email,
-    //     message: message
-    // }).then(() => {
-    //     alert(`ขอบคุณ ${name} สำหรับข้อความของคุณ! เราจะติดต่อกลับโดยเร็วที่สุด`);
-    //     e.target.reset();
-    // });
-    
-    // สำหรับตอนนี้แค่แสดง alert
-    alert(`ขอบคุณ ${name} สำหรับข้อความของคุณ! เราจะติดต่อกลับโดยเร็วที่สุด`);
-    e.target.reset();
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+            if (document.body.contains(notification)) {
+                document.body.removeChild(notification);
+            }
+        }, 300);
+    }, 3000);
 }
 
 // Add interactive animations to portfolio items
 function initPortfolioAnimations() {
     document.querySelectorAll('.portfolio-item').forEach(item => {
         item.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-10px)';
-            this.style.boxShadow = '0 15px 30px rgba(0,0,0,0.2)';
+            if (window.innerWidth > 768) { // เฉพาะ desktop
+                this.style.transform = 'translateY(-10px)';
+                this.style.boxShadow = '0 15px 30px rgba(0,0,0,0.2)';
+                this.style.transition = 'all 0.3s ease';
+            }
         });
         
         item.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-            this.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
-        });
-    });
-}
-
-// Mobile menu toggle
-// function initMobileMenu() {
-//     const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-//     const navLinks = document.querySelector('.nav-links');
-    
-//     if (mobileMenuBtn && navLinks) {
-//         mobileMenuBtn.addEventListener('click', function() {
-//             navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            
-//             // Add mobile menu styles when opened
-//             if (navLinks.style.display === 'flex') {
-//                 navLinks.style.position = 'absolute';
-//                 navLinks.style.top = '100%';
-//                 navLinks.style.left = '0';
-//                 navLinks.style.width = '100%';
-//                 navLinks.style.flexDirection = 'column';
-//                 navLinks.style.background = 'rgba(255, 255, 255, 0.95)';
-//                 navLinks.style.backdropFilter = 'blur(10px)';
-//                 navLinks.style.padding = '1rem';
-//                 navLinks.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
-//             }
-//         });
-//     }
-// }
-
-// Typing animation function
-function typeWriter(element, text, speed = 100) {
-    let i = 0;
-    element.innerHTML = '';
-    function type() {
-        if (i < text.length) {
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
-    }
-    type();
-}
-
-// Lazy loading for images
-function initLazyLoading() {
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                imageObserver.unobserve(img);
+            if (window.innerWidth > 768) { // เฉพาะ desktop
+                this.style.transform = 'translateY(0)';
+                this.style.boxShadow = '0 5px 20px rgba(0,0,0,0.1)';
             }
         });
+        
+        // เพิ่ม touch feedback สำหรับ mobile
+        item.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+            this.style.transition = 'all 0.1s ease';
+        });
+        
+        item.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
     });
-
-    images.forEach(img => imageObserver.observe(img));
-}
-
-// Initialize all functions when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Portfolio website loaded successfully!');
-    initPortfolioAnimations();
-    initMobileMenu();
-    // initLazyLoading(); // uncomment if using lazy loading
-});
-
-// Handle form validation
-function validateForm(formData) {
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const message = formData.get('message');
-    
-    if (name.length < 2) {
-        alert('กรุณากรอกชื่อให้ถูกต้อง');
-        return false;
-    }
-    
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert('กรุณากรอกอีเมลให้ถูกต้อง');
-        return false;
-    }
-    
-    if (message.length < 10) {
-        alert('กรุณากรอกข้อความอย่างน้อย 10 ตัวอักษร');
-        return false;
-    }
-    
-    return true;
-}
-
-// Add loading animation
-function showLoading() {
-    const loader = document.createElement('div');
-    loader.id = 'loading';
-    loader.innerHTML = '<div class="spinner"></div>';
-    loader.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(255,255,255,0.9);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-    `;
-    
-    const spinnerStyle = document.createElement('style');
-    spinnerStyle.textContent = `
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    `;
-    
-    document.head.appendChild(spinnerStyle);
-    document.body.appendChild(loader);
-    
-    setTimeout(() => {
-        if (document.getElementById('loading')) {
-            document.body.removeChild(loader);
-            document.head.removeChild(spinnerStyle);
-        }
-    }, 3000);
 }
 
 // Performance optimization
@@ -346,10 +406,191 @@ function optimizeImages() {
     images.forEach(img => {
         img.loading = 'lazy';
         img.decoding = 'async';
+        
+        // เพิ่ม error handling
+        img.addEventListener('error', function() {
+            this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
+        });
     });
 }
 
-// Initialize performance optimizations
+// การทำความสะอาด memory
+function cleanup() {
+    if (portfolioObserver) {
+        portfolioObserver.disconnect();
+        portfolioObserver = null;
+    }
+    if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+    }
+    if (scrollListener) {
+        window.removeEventListener('scroll', optimizedScrollHandler);
+        scrollListener = null;
+    }
+}
+
+// Event Listeners
+function initEventListeners() {
+    // Modal close events
+    const modal = document.getElementById('portfolioModal');
+    if (modal) {
+        // Close modal เมื่อคลิกนอกพื้นที่
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Close modal เมื่อกด ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                closeModal();
+            }
+        });
+    }
+    
+    // Handle visibility change
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            cleanup();
+        } else {
+            // รี-initialize เมื่อกลับมาที่หน้า
+            setTimeout(() => {
+                initScrollAnimations();
+                initNavbarScroll();
+            }, 100);
+        }
+    });
+    
+    // Handle resize
+    window.addEventListener('resize', function() {
+        // ปิด mobile menu เมื่อเปลี่ยนขนาดหน้าจอ
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks && window.innerWidth > 768) {
+            navLinks.classList.remove('mobile-active');
+        }
+    });
+}
+
+// Initialize all functions when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Portfolio website loaded successfully!');
+    
+    // Initialize components
+    initSmoothScrolling();
+    initScrollAnimations();
+    initNavbarScroll();
+    initPortfolioAnimations();
+    initMobileMenu();
+    initEventListeners();
+    
+    // Performance optimizations
+    setTimeout(() => {
+        optimizeImages();
+    }, 100);
+    
+    console.log('All components initialized successfully!');
+});
+
+// เมื่อ page load เสร็จสมบูรณ์
 window.addEventListener('load', function() {
     optimizeImages();
+    
+    // ซ่อน loading spinner หากมี
+    const loader = document.getElementById('loading');
+    if (loader) {
+        loader.style.opacity = '0';
+        setTimeout(() => {
+            if (document.body.contains(loader)) {
+                document.body.removeChild(loader);
+            }
+        }, 300);
+    }
 });
+
+// เมื่อออกจากหน้า
+window.addEventListener('beforeunload', function() {
+    cleanup();
+});
+
+// เพิ่ม notification animations ใน head
+if (!document.querySelector('#notification-animations')) {
+    const style = document.createElement('style');
+    style.id = 'notification-animations';
+    style.textContent = `
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+        
+        .video-placeholder,
+        .ux-showcase,
+        .ui-showcase,
+        .awards-showcase {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 15px;
+            margin: 1rem 0;
+        }
+        
+        .video-placeholder i,
+        .ux-showcase i,
+        .ui-showcase i,
+        .awards-showcase i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        
+        .video-placeholder p,
+        .ux-showcase p,
+        .ui-showcase p,
+        .awards-showcase p {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .modal-description ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .modal-description li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .modal-description li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: bold;
+        }
+    `;
+    document.head.appendChild(style);
+}

@@ -9,19 +9,20 @@
 </head>
 <body>
     <!-- Navigation -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo">Portfolio</div>
-            <ul class="nav-links">
-                <li><a href="#about">เกี่ยวกับเรา</a></li>
-                <li><a href="#portfolio">ผลงาน</a></li>
-                <li><a href="#contact">ติดต่อ</a></li>
-            </ul>
-            <button class="mobile-menu-btn">
-                <i class="fas fa-bars"></i>
-            </button>
-        </div>
-    </nav>
+<!-- แก้ไขส่วน Navigation -->
+<nav id="navbar">
+    <div class="nav-container">
+        <div class="logo" onclick="scrollToTop()" style="cursor: pointer;">Portfolio</div>
+        <ul class="nav-links">
+            <li><a href="#about">เกี่ยวกับเรา</a></li>
+            <li><a href="#portfolio">ผลงาน</a></li>
+            <li><a href="#contact">ติดต่อ</a></li>
+        </ul>
+        <button class="mobile-menu-btn">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</nav>
 
     <!-- About Section -->
     <section id="about">
@@ -95,12 +96,13 @@
                     </div>
                 </div>
             </div>
-            <div class="portfolio-item" onclick="openModal('modal5')">
+<!-- แก้ไขบรรทัดที่ 98 -->
+            <div class="portfolio-item" onclick="openModal('modal6')">
                 <img src="images/portfolio/project4.jpg" alt="Digital Marketing">
                 <div class="portfolio-content">
-                    <h3>Ui-Design</h3>
+                    <h3>Awards & Certificates</h3>
                     <div class="portfolio-tags">
-                        <span class="portfolio-tag"> Wireframe / Design System & Style Guide / High-Fidelity</span>
+                        <span class="portfolio-tag"> </span>
                     </div>
                 </div>
             </div>
